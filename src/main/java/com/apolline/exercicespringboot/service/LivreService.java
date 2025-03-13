@@ -20,14 +20,9 @@ public class LivreService {
     }
 
     // Récupérer un livre par son ID
-    public String getLivreById(@PathVariable Long id) {
+    public Livre getLivreById(Long id) {
         Optional<Livre> livre = livreRepository.findById(id);
-
-        if (livre.isPresent()) {
-            return livre.toString();
-        } else {
-            return ("Erreur");
-        }
+        return livre.orElse(null);
     }
 
     // Créer un livre
@@ -36,7 +31,7 @@ public class LivreService {
             return ("Vous n'avez pas mis de titre");
         } else if (livre.getDescription() == null || livre.getDescription().isEmpty()) {
             return ("Vous n'avez pas mis de description");
-        } else if (livre.getDate_publication() == null || livre.getDate_publication() == null) {
+        } else if (livre.getDate_publication() == null) {
             return ("Vous n'avez pas mis de date");
         } else {
             livreRepository.save(livre);
@@ -45,7 +40,7 @@ public class LivreService {
     }
 
     // Modifier un livre
-    public String updateLivre(Long id, Livre livre) {
+    public Livre updateLivre(Long id, Livre livre) {
         Optional<Livre> livreOptional = livreRepository.findById(id);
 
         if (livreOptional.isPresent()) {
@@ -53,15 +48,14 @@ public class LivreService {
             livreToUpdate.setTitre(livre.getTitre());
             livreToUpdate.setDescription(livre.getDescription());
             livreToUpdate.setDate_publication(livre.getDate_publication());
-            livreRepository.save(livreToUpdate);
-            return ("Livre modifié avec succès.");
+            return livreRepository.save(livreToUpdate);
         } else {
-            return ("Erreur.");
+            return null;
         }
     }
 
     // Supprimer un livre
-    public String deleteLivre(@PathVariable Long id) {
+    public String deleteLivre(Long id) {
         Optional<Livre> livreOptional = livreRepository.findById(id);
 
         if (livreOptional.isPresent()) {

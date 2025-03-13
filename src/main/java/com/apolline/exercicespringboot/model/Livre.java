@@ -66,7 +66,7 @@ public class Livre {
         this.date_publication = date_publication;
     }
 
-    //toString
+    // Méthode toString
     @Override
     public String toString() {
         return "Livre{" +

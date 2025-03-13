@@ -22,24 +22,24 @@ public class LivreController {
 
     // Récupérer un livre par son ID
     @GetMapping("/livre/{id}")
-    public String findById(@PathVariable Long id) {
+    public Livre findById(@PathVariable Long id) {
         return livreService.getLivreById(id);
     }
 
     // Créer un livre
-    @PostMapping("/create")
+    @PostMapping("/livre")
     public String createLivre(@RequestBody Livre livre) {
         return livreService.saveLivre(livre);
     }
 
     // Modifier un livre
-    @PutMapping("/update/{id}")
-    public String updateLivre(@PathVariable Long id,@RequestBody Livre livre) {
+    @PutMapping("/livre/{id}")
+    public Livre updateLivre(@PathVariable Long id,@RequestBody Livre livre) {
         return livreService.updateLivre(id, livre);
     }
 
     // Supprimer un livre
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/livre/{id}")
     public String deleteLivre(@PathVariable Long id) {
         return livreService.deleteLivre(id);
     }
