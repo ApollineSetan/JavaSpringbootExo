@@ -17,7 +17,7 @@ public class LivreController {
     private LivreService livreService;
 
     // Récupérer tous les livres
-    @GetMapping("/list")
+    @GetMapping("/livres")
     public Iterable<Livre> findAll() {
         return livreService.getAllLivres();
     }
