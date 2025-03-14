@@ -1,5 +1,6 @@
 package com.apolline.exercicespringboot.service;
 
+import com.apolline.exercicespringboot.dto.LivreDto;
 import com.apolline.exercicespringboot.exception.SaveLivreExistException;
 import com.apolline.exercicespringboot.exception.UpdateLivreNotFound;
 import com.apolline.exercicespringboot.model.Livre;
@@ -8,8 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 @Component
@@ -17,6 +21,9 @@ public class LivreService {
 
     @Autowired
     private LivreRepository livreRepository;
+
+    @Autowired
+    private LivreDtoWrapper livreDtoWrapper;
 
     // Récupérer tous les livres
     public Iterable<Livre> getAllLivres() {
@@ -61,7 +68,6 @@ public class LivreService {
         }
     }
 
-
     // Supprimer un livre
     public String deleteLivre(Long id) {
         Optional<Livre> livreOptional = livreRepository.findById(id);
@@ -74,4 +80,17 @@ public class LivreService {
         }
     }
 
+    // Retourne tous les livres au format LivreDto
+    public List<LivreDto> getAllLivreDto() {
+        List<Livre> livres = new ArrayList<>();
+        livreRepository.findAll().forEach(livres::add);
+        return livres.stream()
+                .map(livreDtoWrapper::livreToDto)
+                .collect(Collectors.toList());
+    }
+
+    // Retourne un livre par son ID au format LivreDto
+    public Stream<LivreDto> getLivreDtoById(final Long id) {
+        return livreRepository.findById(id).stream().map(livreDtoWrapper::livreToDto);
+    }
 }
