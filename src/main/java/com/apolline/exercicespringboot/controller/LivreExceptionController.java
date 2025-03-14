@@ -47,12 +47,12 @@ public class LivreExceptionController {
     }
 
     @ExceptionHandler(UpdateLivreNotFound.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
         public ResponseEntity<Map<String, String>> updateLivres(UpdateLivreNotFound updateLivreNotFound) {
         Map<String, String> errorResponse = new HashMap<>();
         errorResponse.put("Erreur : ", updateLivreNotFound.getMessage());
         return ResponseEntity
-                .status(HttpStatus.BAD_REQUEST)
+                .status(HttpStatus.NOT_FOUND)
                 .body(errorResponse);
     }
 }
