@@ -20,9 +20,8 @@ public class LivreService {
     }
 
     // Récupérer un livre par son ID
-    public Livre getLivreById(Long id) {
-        Optional<Livre> livre = livreRepository.findById(id);
-        return livre.orElse(null);
+    public Optional<Livre> getById(int id){
+        return livreRepository.findById((long) id);
     }
 
     // Créer un livre
