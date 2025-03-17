@@ -128,4 +128,12 @@ public class Livre {
                 ", auteur='" + auteur + '\'' +
                 '}';
     }
+
+    public void addGenre(Genre genre) {
+        this.genre.add(genre);
+    }
+
+    public void removeGenre(Genre genre) {
+        this.genre.remove(genre);
+    }
 }
