@@ -2,7 +2,9 @@ package com.apolline.exercicespringboot.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="livre")
@@ -23,26 +25,32 @@ public class Livre {
     @Temporal(TemporalType.DATE)
     private Date date_publication;
 
-    @Column(name = "genre", nullable = true)
-    private String genre;
-
     @Column(name = "auteur", nullable = true)
     private String auteur;
 
-    @Column(name = "maisonEdition", nullable = true)
-    private String maisonEdition;
+    @ManyToOne
+    @JoinColumn(name = "id_user")
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(name = "id_maison_edition")
+    private MaisonEdition maisonEdition;
+
+    @ManyToMany
+    @JoinTable(name = "livre_genre",
+    joinColumns = @JoinColumn(name = "livre_id"),
+    inverseJoinColumns = @JoinColumn(name = "genre_id"))
+    private List<Genre> genre = new ArrayList<>();
 
     // Constructeurs
     public Livre () {
     }
 
-    public Livre(String titre, String description, Date date_publication, String genre, String auteur, String maisonEdition) {
+    public Livre(String titre, String description, Date date_publication, String auteur) {
         this.titre = titre;
         this.description = description;
         this.date_publication = date_publication;
-        this.genre = genre;
         this.auteur = auteur;
-        this.maisonEdition = maisonEdition;
     }
 
     // Getters et Setters
@@ -78,14 +86,6 @@ public class Livre {
         this.date_publication = date_publication;
     }
 
-    public String getGenre() {
-        return genre;
-    }
-
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-
     public String getAuteur() {
         return auteur;
     }
@@ -94,12 +94,28 @@ public class Livre {
         this.auteur = auteur;
     }
 
-    public String getMaisonEdition() {
+    public MaisonEdition getMaisonEdition() {
         return maisonEdition;
     }
 
-    public void setMaisonEdition(String maisonEdition) {
+    public void setMaisonEdition(MaisonEdition maisonEdition) {
         this.maisonEdition = maisonEdition;
+    }
+
+    public List<Genre> getGenre() {
+        return genre;
+    }
+
+    public void setGenre(List<Genre> genre) {
+        this.genre = genre;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     // Méthode toString
@@ -109,9 +125,7 @@ public class Livre {
                 "titre='" + titre + '\'' +
                 ", description='" + description + '\'' +
                 ", date_publication=" + date_publication +
-                ", genre='" + genre + '\'' +
                 ", auteur='" + auteur + '\'' +
-                ", maisonEdition='" + maisonEdition + '\'' +
                 '}';
     }
 }
