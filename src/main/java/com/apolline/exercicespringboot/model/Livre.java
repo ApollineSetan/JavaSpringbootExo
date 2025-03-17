@@ -1,6 +1,7 @@
 package com.apolline.exercicespringboot.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,16 +17,24 @@ public class Livre {
     private Long id;
 
     @Column(name = "titre", nullable = false, unique = true, length = 50)
+    @NotBlank(message = "Le titre doit être renseigné")
+    @Size(min = 3, message ="Le titre doit posséder au moins trois caractères")
     private String titre;
 
     @Column(name = "description", nullable = false, length = 255)
+    @NotBlank(message = "La description doit être renseignée")
+    @Size(min = 5, message ="La description doit posséder au moins cinq caractères")
     private String description;
 
     @Column(name = "date_publication", nullable = false)
     @Temporal(TemporalType.DATE)
+    @NotNull(message = "La date de publication doit être renseignée")
+    @Past(message = "La date de publication doit être passée")
+    @FutureOrPresent(message = "La date de publication ne peut pas être dans le futur")
     private Date date_publication;
 
     @Column(name = "auteur", nullable = true)
+    @NotNull(message = "L'auteur doit être renseigné")
     private String auteur;
 
     @ManyToOne
@@ -40,10 +49,11 @@ public class Livre {
     @JoinTable(name = "livre_genre",
     joinColumns = @JoinColumn(name = "livre_id"),
     inverseJoinColumns = @JoinColumn(name = "genre_id"))
-    private List<Genre> genre = new ArrayList<>();
+    private List<Genre> genre;
 
     // Constructeurs
     public Livre () {
+        this.genre = new ArrayList<>();
     }
 
     public Livre(String titre, String description, Date date_publication, String auteur) {
@@ -51,6 +61,15 @@ public class Livre {
         this.description = description;
         this.date_publication = date_publication;
         this.auteur = auteur;
+        this.genre = new ArrayList<>();
+    }
+
+    public Livre(String titre, String description, Date date_publication, String auteur, MaisonEdition maisonEdition) {
+        this.titre = titre;
+        this.description = description;
+        this.date_publication = date_publication;
+        this.auteur = auteur;
+        this.maisonEdition = maisonEdition;
     }
 
     // Getters et Setters

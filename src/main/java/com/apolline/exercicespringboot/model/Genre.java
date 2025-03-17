@@ -1,6 +1,8 @@
 package com.apolline.exercicespringboot.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "genre")
@@ -11,6 +13,8 @@ public class Genre {
     private Integer id;
 
     @Column(name="name", nullable = false)
+    @NotBlank(message = "Le nom doit être renseigné")
+    @Size(min = 3, message ="Le nom doit posséder au moins trois caractères")
     private String name;
 
     public Genre() {}
